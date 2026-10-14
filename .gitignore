@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# 运行时数据
+kuaichat.db
+uploads/
+downloads/
+
+# 密钥 / 配置（部署时本地提供，不入库）
+.env
+vapid_keys.txt
+
+# 备份文件
+*.bak
+*.bak.*
