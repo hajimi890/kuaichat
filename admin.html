@@ -1,0 +1,159 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>快聊管理</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,sans-serif}
+body{background:#0b1622;color:#e6f2fb;padding:20px;min-height:100vh}
+.h{display:none!important}
+#L{max-width:380px;margin:100px auto;background:#14283d;border:1px solid #1f3d57;border-radius:20px;padding:36px 28px;text-align:center}
+#L .ic{font-size:48px;color:#42a5f5;margin-bottom:16px}#L h1{font-size:22px;margin-bottom:6px}#L p{color:#7a93a8;font-size:13px;margin-bottom:24px}
+#L input{width:100%;background:#12293f;border:1.5px solid #1f3d57;border-radius:12px;padding:14px;color:#e6f2fb;font-size:15px;outline:none;margin-bottom:12px}
+#L button{width:100%;background:linear-gradient(135deg,#42a5f5,#1e88e5);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+#M{max-width:900px;margin:0 auto}
+.tb{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #1f3d57}
+.tb h1{font-size:20px}.tb h1 i{color:#42a5f5;margin-right:8px}
+.tb button{background:#14283d;border:1px solid #1f3d57;color:#9db4c7;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13px}
+.tt{display:flex;gap:8px;margin-bottom:16px}
+.tab{background:#14283d;border:1px solid #1f3d57;color:#9db4c7;padding:10px 18px;border-radius:12px;cursor:pointer;font-family:inherit;font-size:14px}
+.tab.a{background:#42a5f5;border-color:#42a5f5;color:#fff;font-weight:600}
+.ls{display:flex;flex-direction:column;gap:12px}
+.c{background:#14283d;border:1px solid #1f3d57;border-radius:16px;padding:16px 18px}
+.c.pending{border-left:4px solid #ffb74d}.c.handled{border-left:4px solid #1bbf8b}.c.rejected{border-left:4px solid #90a4ae;opacity:.7}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.rid{font-size:12px;color:#55738c;font-family:monospace}
+.st{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.st.pending{background:#4a3620;color:#ffb74d}.st.handled{background:#1a4d3c;color:#1bbf8b}.st.rejected{background:#2a3444;color:#90a4ae}
+.rl{font-size:14px;line-height:1.8;color:#9db4c7}.rl b{color:#e6f2fb}
+.rl .tg{display:inline-block;background:#12293f;color:#7ec3f5;padding:2px 8px;border-radius:8px;font-size:12px;margin-right:6px}
+.rt{font-size:11px;color:#55738c;margin-top:8px}
+.bb{background:#5c2f2f;color:#ef9a9a;padding:2px 8px;border-radius:8px;font-size:11px;margin-left:6px}
+.bm{background:#4a3620;color:#ffb74d;padding:2px 8px;border-radius:8px;font-size:11px;margin-left:6px}
+.bw{background:#3d3b20;color:#f9e79f;padding:2px 8px;border-radius:8px;font-size:11px;margin-left:6px}
+.ac{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.ac button{padding:8px 14px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600}
+.br{background:#2a3444;color:#b0bec5}.bwr{background:#4a3620;color:#ffb74d}.bm2{background:#5a3a20;color:#ff9800}.bb2{background:#5c2f2f;color:#ef9a9a}.bu{background:#1a4d3c;color:#1bbf8b}
+.ac button:hover{opacity:.85}
+.ur{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#14283d;border:1px solid #1f3d57;border-radius:12px;margin-bottom:8px}
+.ur .nm{font-weight:600}.ur .mt{font-size:12px;color:#7a93a8;margin-top:4px}
+.ctx{background:#12293f;border:1px solid #1f3d57;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:#9db4c7;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto;font-family:monospace}.ctx b{color:#7ec3f5}.em{text-align:center;padding:60px 20px;color:#55738c}.em i{font-size:48px;color:#1f3d57;display:block;margin-bottom:16px}
+</style></head><body>
+<div id="L"><div class="ic"><i class="fas fa-shield-halved"></i></div><h1>快聊 · 管理后台</h1><p>请输入管理员密码</p><input type="password" id="pw" placeholder="密码"><button onclick="L()">进入</button></div>
+<div id="M" class="h"><div class="tb"><h1><i class="fas fa-shield-halved"></i>管理后台</h1><button onclick="O()">退出</button></div><div class="tt"><button class="tab a" data-t="p" onclick="T(this)">待处理</button><button class="tab" data-t="a" onclick="T(this)">全部</button><button class="tab" data-t="u" onclick="T(this)">用户</button><button class="tab" data-t="apps" onclick="T(this)">邀请码申请</button></div><div class="ls" id="X"></div></div>
+<script>
+function $(i){return document.getElementById(i)}
+function K(){return localStorage.getItem('kadm')||''}
+function F(u,o){o=o||{};o.headers=Object.assign({},o.headers||{},{Authorization:'Bearer '+K()});return fetch(u,o).then(r=>{if(r.status===401){localStorage.removeItem('kadm');location.reload();throw 0}return r})}
+async function L(){var p=$('pw').value;if(!p)return alert('输入密码');var r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:p})});var d=await r.json();if(d.ok){localStorage.setItem('kadm',d.token);location.reload()}else alert(d.error||'密码错误')}
+function O(){localStorage.removeItem('kadm');location.reload()}
+var CT='p';
+function T(e){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('a'));e.classList.add('a');CT=e.dataset.t;D()}
+function FT(t){if(!t)return'';var d=new Date(t*1000);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function E(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function D(){if(CT==='u')return U();if(CT==='apps')return APPS();var a=CT==='a'?'?all=1':'';var r=await F('/api/admin/reports'+a);var d=await r.json();var x=$('X');if(!d.ok){x.innerHTML='<div class="em">加载失败</div>';return}if(!d.reports.length){x.innerHTML='<div class="em"><i class="fas fa-inbox"></i>暂无举报</div>';return}x.innerHTML='';d.reports.forEach(p=>{var c=document.createElement('div');c.className='c '+p.status;var ib=p.target_banned;var im=p.target_muted_until>Date.now()/1000;c.innerHTML='<div class="ch"><span class="rid">#'+p.id+'</span><span class="st '+p.status+'">'+(p.status==='pending'?'待处理':(p.status==='handled'?'已处理':'已驳回'))+'</span></div>'+'<div class="rl"><span class="tg">举报人</span><b>'+E(p.reporter)+'</b>'+(p.reporter_banned?'<span class="bb">已封禁</span>':'')+'</div>'+'<div class="rl"><span class="tg">被举报</span><b>'+E(p.target)+'</b>'+(ib?'<span class="bb">已封禁</span>':'')+(im?'<span class="bm">禁言中</span>':'')+'</div>'+'<div class="rl"><span class="tg">原因</span>'+E(p.reason)+'</div>'+'<div class="rl"><span class="tg">邮箱</span>'+E(p.email||'-')+'</div>'+'<div class="rt"><i class="far fa-clock"></i> '+FT(p.created_at)+'</div>'+(p.chat_context?'<div class="ctx"><b>聊天记录</b>\n'+E(p.chat_context)+'</div>':'')+'<div class="ac"><button class="bwr" onclick="A('+p.id+',\'warn\')">警告</button><button class="bm2" onclick="A('+p.id+',\'mute\')">禁言1h</button><button class="bb2" onclick="A('+p.id+',\'ban\')">封禁</button><button class="br" onclick="A('+p.id+',\'reject\')">驳回</button></div>';x.appendChild(c)})}
+async function A(id,ac){if(!confirm('确定执行？'))return;var r=await F('/api/admin/report/handle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({report_id:id,action:ac})});var d=await r.json();if(d.ok){alert('已处理');D()}else alert(d.error||'失败')}
+async function U(){var r=await F('/api/admin/users');var d=await r.json();var x=$('X');if(!d.ok){x.innerHTML='<div class="em">失败</div>';return}if(!d.users.length){x.innerHTML='<div class="em">无用户</div>';return}x.innerHTML='';d.users.forEach(u=>{var row=document.createElement('div');row.className='ur';var im=u.muted_until>Date.now()/1000;row.innerHTML='<div><div class="nm">'+E(u.username)+' '+(u.banned?'<span class="bb">封禁</span>':'')+' '+(im?'<span class="bm">禁言</span>':'')+'</div><div class="mt">积分 '+u.points+'</div></div>'+(u.banned||im?'<button class="bu" onclick="UB(\''+E(u.username)+'\')">解封</button>':'');x.appendChild(row)})}
+async function UB(n){if(!confirm('解封 '+n+'？'))return;var r=await F('/api/admin/user/unban',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:n})});var d=await r.json();if(d.ok){alert('已解封');U()}else alert('失败')}
+if(K()){$('L').classList.add('h');$('M').classList.remove('h');D()}
+$('pw').addEventListener('keypress',e=>{if(e.key==='Enter')L()});
+
+async function APPS(){
+  var x = $('X');
+  x.innerHTML = '加载中...';
+  try {
+    var r = await F('/api/admin/applications?all=1');
+    var d = await r.json();
+    if (!d.ok) { x.innerHTML = '<div class="em">加载失败：' + E(d.error || '') + '</div>'; return; }
+    if (!d.applications.length) { x.innerHTML = '<div class="em"><i class="fas fa-inbox"></i>暂无申请</div>'; return; }
+    x.innerHTML = '';
+    d.applications.forEach(function(a){
+      var c = document.createElement('div');
+      c.className = 'c ' + (a.status === 'approved' ? 'handled' : (a.status === 'rejected' ? 'rejected' : 'pending'));
+      var statusText = a.status === 'approved' ? '已通过' : (a.status === 'rejected' ? '已拒绝' : '待审核');
+      var html = '<div class="ch"><span class="rid">#' + a.id + '</span><span class="st ' + (a.status === 'approved' ? 'handled' : (a.status === 'rejected' ? 'rejected' : 'pending')) + '">' + statusText + '</span></div>';
+      html += '<div class="rl"><span class="tg">邮箱</span><b>' + E(a.email) + '</b></div>';
+      if (a.message) html += '<div class="rl"><span class="tg">留言</span>' + E(a.message) + '</div>';
+      html += '<div class="rt"><i class="far fa-clock"></i> ' + FT(a.created_at) + '</div>';
+      if (a.invite_code) {
+        html += '<div class="ctx" style="margin-top:10px;font-size:15px;letter-spacing:3px;color:#7ec3f5;">邀请码：<b>' + E(a.invite_code) + '</b></div>';
+      }
+      if (a.status === 'pending') {
+        html += '<div class="ac"><button class="bu" onclick="APPR(' + a.id + ')">通过</button><button class="br" onclick="REJ(' + a.id + ')">拒绝</button></div>';
+      }
+      c.innerHTML = html;
+      x.appendChild(c);
+    });
+  } catch (e) { x.innerHTML = '<div class="em">网络错误</div>'; }
+}
+
+async function APPR(id){
+  var r = await F('/api/admin/application/approve', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id: id})});
+  var d = await r.json();
+  if (d.ok) { alert('已通过。邀请码：' + d.invite_code); APPS(); }
+  else alert(d.error || '失败');
+}
+
+async function REJ(id){
+  if (!confirm('确定拒绝？')) return;
+  var r = await F('/api/admin/application/reject', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id: id})});
+  var d = await r.json();
+  if (d.ok) { APPS(); } else alert(d.error || '失败');
+}
+
+</script>
+</body></html>
+
+<script>
+/* ADMIN_GROUPS_2025 */
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
+  ready(function(){
+    var tabs = document.querySelector('.tt');
+    if (tabs && !document.getElementById('groupsTabBtn')) {
+      var btn = document.createElement('button');
+      btn.className = 'tab';
+      btn.id = 'groupsTabBtn';
+      btn.textContent = '所有群';
+      btn.onclick = function(){
+        document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('a'); });
+        btn.classList.add('a');
+        window.__showAllGroups();
+      };
+      tabs.appendChild(btn);
+    }
+  });
+
+  window.__showAllGroups = function(){
+    var x = document.getElementById('X');
+    x.innerHTML = '加载中...';
+    fetch('/api/admin/groups', { headers: {'Authorization': 'Bearer ' + (localStorage.getItem('kadm') || '')} }).then(function(r){ return r.json(); }).then(function(d){
+      if (!d.ok) { x.innerHTML = '<div class="em">加载失败</div>'; return; }
+      if (!d.groups.length) { x.innerHTML = '<div class="em"><i class="fas fa-users"></i>暂无群聊</div>'; return; }
+      x.innerHTML = '';
+      d.groups.forEach(function(g){
+        var card = document.createElement('div');
+        card.className = 'c';
+        var dt = new Date(g.created_at * 1000);
+        var ds = dt.getFullYear() + '-' + (dt.getMonth()+1) + '-' + dt.getDate();
+        card.innerHTML = '<div class="ch"><span class="rid">#' + g.id + '</span><span class="st handled">' + g.member_count + ' 人 / ' + g.msg_count + ' 条</span></div>' +
+          '<div class="rl"><span class="tg">群名</span><b>' + (g.name || '').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }) + '</b></div>' +
+          '<div class="rl"><span class="tg">群主</span>' + (g.owner || '') + '</div>' +
+          '<div class="rt"><i class="far fa-clock"></i> ' + ds + '</div>' +
+          '<div class="ac"><button class="bu" onclick="__viewGroupMembers(' + g.id + ')">查看成员</button><button class="bb2" onclick="__delGroup(' + g.id + ')">解散群聊</button></div>';
+        x.appendChild(card);
+      });
+    }).catch(function(){ x.innerHTML = '<div class="em">加载失败</div>'; });
+  };
+
+  window.__viewGroupMembers = function(gid){
+    fetch('/api/admin/group/members?group_id=' + gid, { headers: {'Authorization': 'Bearer ' + (localStorage.getItem('kadm') || '')} }).then(function(r){ return r.json(); }).then(function(d){
+      if (!d.ok) return alert('加载失败');
+      var names = d.members.map(function(m){ return m.username; }).join('\n');
+      alert('群 ' + gid + ' 的成员：\n\n' + names);
+    });
+  };
+
+  window.__delGroup = function(gid){
+    if (!confirm('确定解散群 ' + gid + '？此操作不可恢复')) return;
+    fetch('/api/admin/group/delete', { method:'POST', headers: {'Content-Type':'application/json','Authorization': 'Bearer ' + (localStorage.getItem('kadm') || '')}, body: JSON.stringify({group_id: gid}) }).then(function(r){ return r.json(); }).then(function(d){
+      if (d.ok) { alert('已解散'); window.__showAllGroups(); } else alert(d.error || '失败');
+    });
+  };
+})();
+</script>

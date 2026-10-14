@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快聊 · 下载 · 隐私至上</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: linear-gradient(180deg, #e3f2fd 0%, #f5faff 40%, #ffffff 100%);
+    color: #0d3d6b;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .navbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e3f2fd;
+    padding: 14px 0;
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .nav-logo-icon {
+    width: 38px; height: 38px; border-radius: 12px;
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white; font-size: 19px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 14px rgba(30, 136, 229, 0.3);
+  }
+  .nav-logo-text { font-size: 19px; font-weight: 700; color: #1565c0; letter-spacing: -0.3px; }
+  .nav-logo-text span { font-size: 11px; font-weight: 400; color: #90a4ae; margin-left: 4px; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: #546e7a; text-decoration: none; font-size: 14px; font-weight: 500; transition: color .15s; }
+  .nav-links a:hover { color: #1e88e5; }
+  .nav-actions { display: flex; gap: 10px; align-items: center; }
+  .nav-online {
+    background: #ffffff; color: #1976d2; border: 1.5px solid #bbdefb;
+    padding: 9px 18px; border-radius: 24px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all .2s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .nav-online:hover { border-color: #42a5f5; background: #f5faff; color: #1565c0; }
+  .nav-cta {
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white; border: none; padding: 10px 20px;
+    border-radius: 24px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all .2s;
+    box-shadow: 0 6px 14px rgba(30, 136, 229, 0.3);
+    text-decoration: none; display: inline-flex; align-items: center; gap: 7px;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(30, 136, 229, 0.4); }
+
+  .hero {
+    max-width: 1100px; margin: 0 auto;
+    padding: 80px 24px 60px;
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    gap: 60px; align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #e3f2fd; border: 1px solid #bbdefb;
+    color: #1976d2; padding: 6px 14px; border-radius: 30px;
+    font-size: 12px; font-weight: 600; margin-bottom: 20px;
+  }
+  .hero-badge i { font-size: 11px; }
+  .hero h1 {
+    font-size: 52px; line-height: 1.08; font-weight: 800;
+    letter-spacing: -1.5px; color: #0d3d6b; margin-bottom: 20px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { font-size: 17px; line-height: 1.7; color: #546e7a; margin-bottom: 34px; max-width: 480px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
+  .btn-primary {
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white; border: none; padding: 16px 32px; border-radius: 14px;
+    font-size: 16px; font-weight: 600; cursor: pointer; transition: all .2s;
+    box-shadow: 0 10px 26px rgba(30, 136, 229, 0.35);
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(30, 136, 229, 0.45); }
+  .btn-online {
+    background: #ffffff; color: #1565c0;
+    border: 2px solid #42a5f5; padding: 14px 30px; border-radius: 14px;
+    font-size: 16px; font-weight: 600; cursor: pointer; transition: all .2s;
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(30, 136, 229, 0.14);
+  }
+  .btn-online:hover {
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: #ffffff; border-color: transparent;
+    transform: translateY(-2px); box-shadow: 0 12px 28px rgba(30, 136, 229, 0.4);
+  }
+  .btn-online i { font-size: 15px; }
+  .hero-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: #78909c; }
+  .hero-meta span { display: flex; align-items: center; gap: 6px; }
+  .hero-meta i { color: #42a5f5; font-size: 12px; }
+
+  .hero-visual { display: flex; justify-content: center; }
+  .phone-mock {
+    width: 300px; height: 620px; background: #ffffff; border-radius: 34px;
+    box-shadow: 0 40px 80px -20px rgba(21, 101, 192, 0.35),
+                0 0 0 8px #ffffff, 0 0 0 9px #e3f2fd;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .phone-notch {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 90px; height: 6px; border-radius: 6px; background: #d4e4f7; z-index: 10;
+  }
+  .phone-header {
+    padding: 40px 20px 16px; border-bottom: 1px solid #e3f2fd;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .phone-header-logo {
+    width: 32px; height: 32px; border-radius: 10px;
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white; display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .phone-header-title { font-size: 15px; font-weight: 700; color: #1565c0; }
+  .phone-header-title span { font-size: 10px; color: #90a4ae; font-weight: 400; margin-left: 4px; }
+  .phone-list {
+    flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 4px;
+    overflow-y: auto;
+  }
+  .phone-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px; border-radius: 14px; transition: background .15s;
+  }
+  .phone-item:hover { background: #f5faff; }
+  .phone-avatar {
+    width: 44px; height: 44px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 600; color: white;
+    position: relative; flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(33, 150, 243, 0.2);
+  }
+  .phone-avatar::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; background: #1bbf8b;
+    border-radius: 50%; border: 2.5px solid #ffffff;
+  }
+  .phone-avatar.offline::after { background: #cfd8dc; }
+  .phone-info { flex: 1; min-width: 0; }
+  .phone-name { font-size: 14px; font-weight: 600; color: #0d3d6b; margin-bottom: 3px; }
+  .phone-msg { font-size: 12px; color: #90a4ae; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .features { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
+  .section-header { text-align: center; margin-bottom: 56px; }
+  .section-header h2 { font-size: 36px; font-weight: 800; color: #0d3d6b; letter-spacing: -0.8px; margin-bottom: 12px; }
+  .section-header p { font-size: 16px; color: #78909c; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .feature-card {
+    background: #ffffff; border: 1px solid #e3f2fd;
+    border-radius: 20px; padding: 32px 28px; transition: all .25s;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px); border-color: #bbdefb;
+    box-shadow: 0 20px 40px -12px rgba(30, 136, 229, 0.18);
+  }
+  .feature-icon {
+    width: 52px; height: 52px; border-radius: 15px;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1976d2; font-size: 22px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .feature-card h3 { font-size: 18px; font-weight: 700; color: #0d3d6b; margin-bottom: 10px; }
+  .feature-card p { font-size: 14px; line-height: 1.7; color: #607d8b; }
+
+  .download-section { max-width: 1100px; margin: 0 auto; padding: 60px 24px 80px; }
+  .download-panel {
+    background: linear-gradient(135deg, #1565c0 0%, #1e88e5 50%, #42a5f5 100%);
+    border-radius: 32px; padding: 64px 48px; color: white;
+    position: relative; overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(21, 101, 192, 0.4);
+  }
+  .download-panel::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+    border-radius: 50%;
+  }
+  .download-content { position: relative; z-index: 1; }
+  .download-content h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 12px; }
+  .download-content > p { font-size: 15px; opacity: 0.9; margin-bottom: 36px; max-width: 520px; line-height: 1.7; }
+
+  .online-cta {
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    border-radius: 20px; padding: 22px 26px; margin-bottom: 32px;
+    cursor: pointer; transition: all .22s; text-decoration: none; color: white;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .online-cta:hover {
+    background: rgba(255, 255, 255, 0.26);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  }
+  .online-cta-icon {
+    width: 54px; height: 54px; border-radius: 16px;
+    background: rgba(255, 255, 255, 0.24);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .online-cta-text { flex: 1; }
+  .online-cta-text .title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .online-cta-text .desc { font-size: 12px; opacity: 0.85; }
+  .online-cta .arrow { font-size: 18px; opacity: 0.7; transition: transform .22s; }
+  .online-cta:hover .arrow { transform: translateX(4px); opacity: 1; }
+
+  .download-subtitle {
+    font-size: 13px; font-weight: 600; opacity: 0.85;
+    letter-spacing: 0.5px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .download-subtitle::after {
+    content: ''; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.2);
+  }
+
+  .download-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; max-width: 780px; }
+  .download-btn {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-radius: 18px; padding: 22px 22px;
+    display: flex; align-items: center; gap: 16px;
+    cursor: pointer; transition: all .22s; color: white; text-decoration: none;
+    font-family: inherit; text-align: left; width: 100%;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .download-btn:hover {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.15);
+  }
+  .download-btn.primary {
+    background: rgba(255, 255, 255, 0.30);
+    border-color: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  }
+  .download-btn.soon { opacity: .85; }
+  .download-btn i { font-size: 30px; flex-shrink: 0; width: 44px; text-align: center; }
+  .download-btn .dl-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .download-btn .dl-name { font-size: 15px; font-weight: 700; }
+  .download-btn .dl-meta { font-size: 11px; opacity: 0.85; }
+  .download-note {
+    margin-top: 28px; font-size: 13px; opacity: 0.85;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+
+  .sysreq { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
+  .sysreq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 40px; }
+  .sysreq-card { background: #ffffff; border: 1px solid #e3f2fd; border-radius: 18px; padding: 26px; }
+  .sysreq-card h4 { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #0d3d6b; margin-bottom: 14px; }
+  .sysreq-card h4 i { color: #42a5f5; font-size: 15px; }
+  .sysreq-card ul { list-style: none; font-size: 13px; color: #607d8b; line-height: 2; }
+  .sysreq-card li::before { content: '·'; color: #42a5f5; font-weight: bold; margin-right: 8px; }
+
+  .faq { max-width: 800px; margin: 0 auto; padding: 60px 24px 80px; }
+  .faq-item { background: #ffffff; border: 1px solid #e3f2fd; border-radius: 16px; padding: 24px 28px; margin-bottom: 14px; transition: all .2s; }
+  .faq-item:hover { border-color: #bbdefb; }
+  .faq-item h3 { font-size: 15px; font-weight: 700; color: #0d3d6b; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .faq-item h3 i { color: #42a5f5; font-size: 14px; }
+  .faq-item p { font-size: 13.5px; line-height: 1.75; color: #607d8b; }
+
+  .footer { background: #0d3d6b; color: #b0c7e0; padding: 44px 24px 32px; text-align: center; margin-top: 40px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .footer-logo-icon {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 15px;
+  }
+  .footer-logo-text { font-size: 17px; font-weight: 700; color: white; }
+  .footer p { font-size: 13px; line-height: 1.7; opacity: 0.8; }
+  .footer-links { margin-top: 20px; display: flex; justify-content: center; gap: 26px; flex-wrap: wrap; }
+  .footer-links a { color: #b0c7e0; text-decoration: none; font-size: 13px; transition: color .15s; }
+  .footer-links a:hover { color: white; }
+  .footer-copy { margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 12px; opacity: 0.7; }
+
+  .toast {
+    position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #ffffff; color: #1976d2;
+    font-size: 14px; font-weight: 500;
+    padding: 14px 24px; border-radius: 14px;
+    border: 1px solid #bbdefb;
+    box-shadow: 0 16px 40px rgba(30, 136, 229, 0.25);
+    z-index: 1000; opacity: 0; pointer-events: none;
+    transition: all .28s; max-width: 90vw;
+    text-align: center; white-space: pre-line;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.error { color: #d32f2f; border-color: #ffcdd2; }
+
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; padding: 60px 24px 40px; gap: 50px; text-align: center; }
+    .hero h1 { font-size: 38px; }
+    .hero p { margin-left: auto; margin-right: auto; }
+    .hero-actions { justify-content: center; }
+    .hero-meta { justify-content: center; }
+    .hero-visual { order: -1; }
+    .phone-mock { width: 260px; height: 540px; }
+    .nav-links { display: none; }
+    .nav-online span { display: none; }
+    .nav-online { padding: 9px 12px; }
+    .download-panel { padding: 44px 28px; }
+    .download-content h2 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon"><i class="fas fa-comment-dots"></i></div>
+      <div class="nav-logo-text">快聊 <span>隐私版</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#download">下载</a>
+      <a href="#sysreq">系统要求</a>
+      <a href="#faq">常见问题</a>
+    </div>
+    <div class="nav-actions">
+      <a href="/chat" class="nav-online">
+        <i class="fas fa-globe"></i> <span>在线使用</span>
+      </a>
+      <a href="#download" class="nav-cta">
+        <i class="fas fa-download"></i> 下载
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">
+      <i class="fas fa-shield-alt"></i> 端到端加密 · 隐私至上
+    </div>
+    <h1>聊天，<br>本该<span class="accent">私密</span>。</h1>
+    <p>快聊是一款专注于隐私保护的轻量级聊天软件。好友一对一加密对话，消息本地存储，绝不上传云端，让你和朋友之间的每一次交流都安全无忧。</p>
+    <div class="hero-actions">
+      <a href="/chat" class="btn-online">
+        <i class="fas fa-bolt"></i> 立即在线使用
+      </a>
+      <a href="#download" class="btn-primary">
+        <i class="fas fa-download"></i> 下载客户端
+      </a>
+    </div>
+    <div class="hero-meta">
+      <span><i class="fas fa-code-branch"></i> 版本 {{ app.version }}</span>
+      <span><i class="fas fa-weight-hanging"></i> {{ app.size }}</span>
+      <span><i class="fas fa-gift"></i> {{ app.license }}</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="phone-mock">
+      <div class="phone-notch"></div>
+      <div class="phone-header">
+        <div class="phone-header-logo"><i class="fas fa-comment-dots"></i></div>
+        <div class="phone-header-title">快聊 <span>隐私版</span></div>
+      </div>
+      <div class="phone-list">
+        <div class="phone-item">
+          <div class="phone-avatar" style="background:linear-gradient(135deg,#42a5f5,#1e88e5)">A</div>
+          <div class="phone-info"><div class="phone-name">Alice</div><div class="phone-msg">今晚老地方见 🔒</div></div>
+        </div>
+        <div class="phone-item">
+          <div class="phone-avatar" style="background:linear-gradient(135deg,#29b6f6,#0288d1)">B</div>
+          <div class="phone-info"><div class="phone-name">Bob</div><div class="phone-msg">文件已收到，谢谢</div></div>
+        </div>
+        <div class="phone-item">
+          <div class="phone-avatar offline" style="background:linear-gradient(135deg,#5c6bc0,#3949ab)">C</div>
+          <div class="phone-info"><div class="phone-name">Carol</div><div class="phone-msg">离线 · 明天聊</div></div>
+        </div>
+        <div class="phone-item">
+          <div class="phone-avatar" style="background:linear-gradient(135deg,#26c6da,#00838f)">D</div>
+          <div class="phone-info"><div class="phone-name">Dave</div><div class="phone-msg">消息已加密 ✓</div></div>
+        </div>
+        <div class="phone-item">
+          <div class="phone-avatar" style="background:linear-gradient(135deg,#7986cb,#3f51b5)">E</div>
+          <div class="phone-info"><div class="phone-name">Eve</div><div class="phone-msg">收到 👍</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="section-header">
+    <h2>为隐私而生的聊天体验</h2>
+    <p>每一个细节，都围绕着"让你的对话只属于你"来设计。</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>端到端加密</h3><p>每条消息都经过加密算法处理，只有你和对方能读懂，中间人无法窃取。</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fas fa-server"></i></div><h3>本地优先</h3><p>消息优先存储在本地，服务器只做转发。你可以随时导出或彻底删除你的数据。</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fas fa-feather"></i></div><h3>极致轻量</h3><p>安装包仅 {{ app.size }}，打开秒启动，不吃内存，老旧电脑也能流畅运行。</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>好友系统</h3><p>添加好友才能聊天，杜绝陌生人骚扰。在线状态一目了然，随时开聊。</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fas fa-history"></i></div><h3>消息历史</h3><p>换设备也能找回聊天记录，历史消息自动同步，随时翻阅不丢失。</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fas fa-code"></i></div><h3>完全开源</h3><p>源码公开可审计，隐私不靠承诺，靠代码说话。欢迎加入共建。</p></div>
+  </div>
+</section>
+
+<section class="download-section" id="download">
+  <div class="download-panel">
+    <div class="download-content">
+      <h2>选择你的平台，立即开始</h2>
+      <p>当前版本 {{ app.version }}（发布于 {{ app.release_date }}），可以下载客户端安装使用，也可以直接在浏览器里开始聊天。</p>
+
+      <a href="/chat" class="online-cta">
+        <div class="online-cta-icon"><i class="fas fa-globe"></i></div>
+        <div class="online-cta-text">
+          <div class="title">无需安装 · 在线使用</div>
+          <div class="desc">直接在浏览器打开，输入昵称即可开始聊天</div>
+        </div>
+        <i class="fas fa-arrow-right arrow"></i>
+      </a>
+
+      <div class="download-subtitle">
+        <i class="fas fa-download"></i> 或下载客户端
+      </div>
+
+      <div class="download-options">
+        <button class="download-btn primary" data-platform="android">
+          <i class="fab fa-android"></i>
+          <div class="dl-text"><div class="dl-name">Android 安卓</div><div class="dl-meta">Android 8.0 及以上 · APK 安装包</div></div>
+        </button>
+        <button class="download-btn" data-platform="windows">
+          <i class="fab fa-windows"></i>
+          <div class="dl-text"><div class="dl-name">Windows 桌面客户端</div><div class="dl-meta">一键打包包 · 电脑上打包出 exe</div></div>
+        </button>
+      </div>
+
+      <div class="download-note">
+        <i class="fas fa-shield-alt"></i>
+        Android 安装包已就绪，可直接下载安装；Windows 下载打包包，在电脑上双击 build.bat 一键打包出桌面 exe。
+      </div>
+      <div class="download-note" style="margin-top:10px; background:rgba(255,193,7,.1); border-color:rgba(255,193,7,.25);">
+        <i class="fas fa-info-circle"></i>
+        免费托管服务器带宽有限，APK（约 7.5MB）在手机上可能下载较慢，建议使用 WiFi 并耐心等待，或用电脑下载后传到手机安装。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sysreq" id="sysreq">
+  <div class="section-header">
+    <h2>系统要求</h2>
+    <p>快聊对设备要求极低，几乎任何现代安卓手机和电脑都能流畅运行。</p>
+  </div>
+  <div class="sysreq-grid">
+    <div class="sysreq-card">
+      <h4><i class="fab fa-android"></i> Android</h4>
+      <ul><li>Android 8.0（Oreo）及以上</li><li>2 GB 内存以上</li><li>100 MB 可用磁盘空间</li><li>需要网络连接</li></ul>
+    </div>
+    <div class="sysreq-card">
+      <h4><i class="fab fa-windows"></i> Windows</h4>
+      <ul><li>Windows 10 / 11（64位）</li><li>2 GB 内存以上</li><li>下载打包包，在电脑上一键打包出桌面 exe</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="section-header">
+    <h2>常见问题</h2>
+    <p>你可能想知道的几个问题。</p>
+  </div>
+  <div class="faq-item">
+    <h3><i class="fas fa-question-circle"></i> 快聊真的安全吗？</h3>
+    <p>是的。所有消息在发送前会经过加密处理，只有你和对方能解密。即使服务器被攻击，攻击者也只能拿到密文，无法读取聊天内容。</p>
+  </div>
+  <div class="faq-item">
+    <h3><i class="fas fa-question-circle"></i> 需要注册账号吗？</h3>
+    <p>不需要。快聊采用"昵称即账号"的设计，无需手机号、邮箱，打开即用。你的身份信息完全由你掌控。</p>
+  </div>
+  <div class="faq-item">
+    <h3><i class="fas fa-question-circle"></i> 一定要下载客户端吗？</h3>
+    <p>不一定。可以直接点击"在线使用"，在浏览器里就能聊天。也可以下载安卓客户端，获得更流畅的移动体验；Windows 桌面客户端下载打包包后，在电脑上双击 build.bat 即可一键打包出 exe。</p>
+  </div>
+  <div class="faq-item">
+    <h3><i class="fas fa-question-circle"></i> 会收费吗？</h3>
+    <p>完全免费，永久开源。没有会员，没有广告，没有内购。如果你喜欢它，欢迎给项目点个 Star。</p>
+  </div>
+  <div class="faq-item">
+    <h3><i class="fas fa-question-circle"></i> 我能在多台设备上使用吗？</h3>
+    <p>可以。用同一个昵称登录即可看到好友列表和历史消息。消息会安全同步，不会丢失。</p>
+  </div>
+  <div class="faq-item">
+    <h3><i class="fas fa-question-circle"></i> 支持群聊吗？</h3>
+    <p>当前版本专注于一对一的私密聊天。群聊功能正在开发中，敬请期待。</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-icon"><i class="fas fa-comment-dots"></i></div>
+      <div class="footer-logo-text">快聊</div>
+    </div>
+    <p>隐私至上 · 好友加密聊天 · 完全开源</p>
+    <div class="footer-links">
+      <a href="#features">功能介绍</a>
+      <a href="#download">下载</a>
+      <a href="#sysreq">系统要求</a>
+      <a href="#faq">常见问题</a>
+    </div>
+    <div class="footer-copy">© 2025 快聊 · 本项目遵循 MIT 开源协议</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const toastEl = document.getElementById('toast');
+
+function showToast(text, isError = false) {
+  toastEl.textContent = text;
+  toastEl.className = 'toast show' + (isError ? ' error' : '');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(() => toastEl.className = 'toast', 3500);
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length > 1) {
+      const el = document.querySelector(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }
+  });
+});
+
+document.querySelectorAll('.download-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const platform = btn.dataset.platform;
+    const oldHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i><div class="dl-text"><div class="dl-name">准备中...</div><div class="dl-meta">请稍候</div></div>';
+    try {
+      const res = await fetch('/download/' + platform);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        showToast(data.error || '下载失败：文件不存在', true);
+      } else {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const cd = res.headers.get('Content-Disposition') || '';
+        const m = cd.match(/filename="?([^";]+)"?/);
+        a.download = m ? m[1] : `kuaichat-${platform}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('开始下载，请查看浏览器下载栏');
+      }
+    } catch (e) {
+      showToast('网络错误，请稍后重试', true);
+    } finally {
+      setTimeout(() => { btn.disabled = false; btn.innerHTML = oldHtml; }, 800);
+    }
+  });
+});
+</script>
+</body>
+</html>
